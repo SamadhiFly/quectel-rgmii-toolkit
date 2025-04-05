@@ -79,7 +79,7 @@ remount_ro() {
 remount_rw
 # Function to remove Simple Firewall
 uninstall_simple_firewall() {
-	echo "Uninstalling Simplefirewall..."
+    echo "Uninstalling Simplefirewall..."
     systemctl stop simplefirewall
     systemctl stop ttl-override
     rm -f /lib/systemd/system/simplefirewall.service
@@ -99,9 +99,9 @@ install_simple_firewall() {
     wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/simplefirewall.sh" $MYGITROOT/simplefirewall/simplefirewall.sh
     wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/ttl-override" $MYGITROOT/simplefirewall/ttl-override
     wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/ttlvalue" $MYGITROOT/simplefirewall/ttlvalue
-	chmod 666 $SIMPLE_FIREWALL_DIR/ttlvalue
+    chmod 666 $SIMPLE_FIREWALL_DIR/ttlvalue
     chmod +x "$SIMPLE_FIREWALL_DIR/simplefirewall.sh"
-    chmod +x "$SIMPLE_FIREWALL_DIR/ttl-override"	
+    chmod +x "$SIMPLE_FIREWALL_DIR/ttl-override"    
     wget --no-check-certificate -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/simplefirewall.service" $MYGITROOT/simplefirewall/systemd/simplefirewall.service
     wget --no-check-certificate -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/ttl-override.service" $MYGITROOT/simplefirewall/systemd/ttl-override.service
     cp -rf $SIMPLE_FIREWALL_SYSTEMD_DIR/* /lib/systemd/system
@@ -111,7 +111,7 @@ install_simple_firewall() {
     systemctl start simplefirewall
     systemctl start ttl-override
     echo -e "\033[0;32mSimple Firewall installation/update complete.\033[0m"
-	}
+    }
 uninstall_simple_firewall
 install_simple_firewall
 remount_ro

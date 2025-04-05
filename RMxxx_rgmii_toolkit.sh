@@ -51,9 +51,9 @@ send_at_command() {
     fi
     
     if [ "$at_command" = "install" ]; then
-		install_update_at_socat
-		echo -e "\e[1;32mInstalled. Type atcmd from adb shell or ssh to start an AT Command session\e[0m"
-		return 1
+        install_update_at_socat
+        echo -e "\e[1;32mInstalled. Type atcmd from adb shell or ssh to start an AT Command session\e[0m"
+        return 1
     fi
     echo -e "${at_command}\r" > "$DEVICE_FILE"
 }
@@ -74,8 +74,8 @@ wait_for_response() {
         elapsed_time=$((current_time - start_time))
         if [ "$elapsed_time" -ge "$TIMEOUT" ]; then
             echo -e "\e[1;31mError: Response timed out.\e[0m"  # Red
-	    echo -e "\e[1;32mIf the responce takes longer than a second or 2 to respond this will not work\e[0m"  # Green
-	    echo -e "\e[1;36mType install to install the better version of this that will work.\e[0m"  # Cyan
+            echo -e "\e[1;32mIf the responce takes longer than a second or 2 to respond this will not work\e[0m"  # Green
+            echo -e "\e[1;36mType install to install the better version of this that will work.\e[0m"  # Cyan
             return 1
         fi
         sleep 1
@@ -107,7 +107,7 @@ send_at_commands() {
 
 # Check for existing Entware/opkg installation, install if not installed
 ensure_entware_installed() {
-	remount_rw
+    remount_rw
     if [ ! -f "/opt/bin/opkg" ]; then
         echo -e "\e[1;32mInstalling Entware/OPKG\e[0m"
         cd /tmp && wget --no-check-certificate -O installentware.sh "$MYGITROOT/installentware.sh" && chmod +x installentware.sh && ./installentware.sh
@@ -139,7 +139,7 @@ ensure_entware_installed() {
             rm /bin/login /usr/bin/passwd
             ln -sf /opt/bin/login /bin
             ln -sf /opt/bin/passwd /usr/bin/
-			ln -sf /opt/bin/useradd /usr/bin/
+            ln -sf /opt/bin/useradd /usr/bin/
             echo -e "\e[1;31mPlease set the root password.\e[0m"
             /opt/bin/passwd
 
@@ -161,14 +161,14 @@ ensure_entware_installed() {
             sed -i '1s|/home/root:/bin/sh|/usrdata/root:/bin/bash|' /opt/etc/passwd
         fi
     fi
-	if [ ! -f "/opt/sbin/useradd" ]; then
-		echo "useradd does not exist. Installing shadow-useradd..."
-		opkg install shadow-useradd
-		else
-		echo "useradd already exists. Continuing..."
-	fi
+    if [ ! -f "/opt/sbin/useradd" ]; then
+        echo "useradd does not exist. Installing shadow-useradd..."
+        opkg install shadow-useradd
+    else
+        echo "useradd already exists. Continuing..."
+    fi
     
-	if [ ! -f "/usr/bin/curl" ] && [ ! -f "/opt/bin/curl" ]; then
+    if [ ! -f "/usr/bin/curl" ] && [ ! -f "/opt/bin/curl" ]; then
         echo "curl does not exist. Installing curl..."
         opkg update && opkg install curl
         if [ "$?" -ne 0 ]; then
@@ -291,8 +291,8 @@ configure_simple_firewall() {
             return
         else
             /usrdata/simplefirewall/ttl-override stop
-	    echo "$new_ttl_value" > /usrdata/simplefirewall/ttlvalue
-     	    /usrdata/simplefirewall/ttl-override start
+        echo "$new_ttl_value" > /usrdata/simplefirewall/ttlvalue
+             /usrdata/simplefirewall/ttl-override start
             echo -e "\033[0;32mTTL value updated to $new_ttl_value.\033[0m"
         fi
         ;;
@@ -306,48 +306,47 @@ configure_simple_firewall() {
 }
 
 set_simpleadmin_passwd(){
-	ensure_entware_installed
- 	opkg update
-  	opkg install libaprutil
-	wget --no-check-certificate -O /usrdata/root/bin/htpasswd $MYGITROOT/simpleadmin/htpasswd && chmod +x /usrdata/root/bin/htpasswd
-	wget --no-check-certificate -O /usrdata/root/bin/simplepasswd $MYGITROOT/simpleadmin/simplepasswd && chmod +x /usrdata/root/bin/simplepasswd
-	echo -e "\e[1;32mTo change your simpleadmin (admin) password in the future...\e[0m"
-	echo -e "\e[1;32mIn the console type simplepasswd and press enter\e[0m"
-	/usrdata/root/bin/simplepasswd
-	
+    ensure_entware_installed
+    opkg update
+    opkg install libaprutil
+    wget --no-check-certificate -O /usrdata/root/bin/htpasswd $MYGITROOT/simpleadmin/htpasswd && chmod +x /usrdata/root/bin/htpasswd
+    wget --no-check-certificate -O /usrdata/root/bin/simplepasswd $MYGITROOT/simpleadmin/simplepasswd && chmod +x /usrdata/root/bin/simplepasswd
+    echo -e "\e[1;32mTo change your simpleadmin (admin) password in the future...\e[0m"
+    echo -e "\e[1;32mIn the console type simplepasswd and press enter\e[0m"
+    /usrdata/root/bin/simplepasswd
 }
 
 set_root_passwd() {
-	echo -e "\e[1;31mPlease set the root/console password.\e[0m"
-	/opt/bin/passwd
+    echo -e "\e[1;31mPlease set the root/console password.\e[0m"
+    /opt/bin/passwd
 }
 
 # Function to install/update Simple Admin
 install_simple_admin() {
-	echo -e "\e[1;32mInstalling Simpleadmin 2.0\e[0m"
-	ensure_entware_installed
-	echo -e "\e[1;31m2) Installing Simpleadmin 2.0\e[0m"
-	mkdir /usrdata/simpleupdates > /dev/null 2>&1
-	mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh $MYGITROOT/simpleupdates/scripts/update_socat-at-bridge.sh && chmod +x /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
-	echo -e "\e[1;32mInstalling/updating dependency: socat-at-bridge\e[0m"
-	echo -e "\e[1;32mPlease Wait....\e[0m"
-	/usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
-	echo -e "\e[1;32m Dependency: socat-at-bridge has been updated/installed.\e[0m"
-	sleep 1
-	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simplefirewall.sh $MYGITROOT/simpleupdates/scripts/update_simplefirewall.sh && chmod +x /usrdata/simpleupdates/scripts/update_simplefirewall.sh
-	echo -e "\e[1;32mInstalling/updating dependency: simplefirewall\e[0m"
-	echo -e "\e[1;32mPlease Wait....\e[0m"
-	/usrdata/simpleupdates/scripts/update_simplefirewall.sh
-	echo -e "\e[1;32m Dependency: simplefirewall has been updated/installed.\e[0m"
-	sleep 1
-	set_simpleadmin_passwd
-	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simpleadmin.sh $MYGITROOT/simpleupdates/scripts/update_simpleadmin.sh && chmod +x /usrdata/simpleupdates/scripts/update_simpleadmin.sh
-	echo -e "\e[1;32mInstalling/updating: Simpleadmin content\e[0m"
-	echo -e "\e[1;32mPlease Wait....\e[0m"
-	/usrdata/simpleupdates/scripts/update_simpleadmin.sh
+    echo -e "\e[1;32mInstalling Simpleadmin 2.0\e[0m"
+    ensure_entware_installed
+    echo -e "\e[1;31m2) Installing Simpleadmin 2.0\e[0m"
+    mkdir /usrdata/simpleupdates > /dev/null 2>&1
+    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh $MYGITROOT/simpleupdates/scripts/update_socat-at-bridge.sh && chmod +x /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
+    echo -e "\e[1;32mInstalling/updating dependency: socat-at-bridge\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
+    echo -e "\e[1;32m Dependency: socat-at-bridge has been updated/installed.\e[0m"
+    sleep 1
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simplefirewall.sh $MYGITROOT/simpleupdates/scripts/update_simplefirewall.sh && chmod +x /usrdata/simpleupdates/scripts/update_simplefirewall.sh
+    echo -e "\e[1;32mInstalling/updating dependency: simplefirewall\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    /usrdata/simpleupdates/scripts/update_simplefirewall.sh
+    echo -e "\e[1;32m Dependency: simplefirewall has been updated/installed.\e[0m"
+    sleep 1
+    set_simpleadmin_passwd
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simpleadmin.sh $MYGITROOT/simpleupdates/scripts/update_simpleadmin.sh && chmod +x /usrdata/simpleupdates/scripts/update_simpleadmin.sh
+    echo -e "\e[1;32mInstalling/updating: Simpleadmin content\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    /usrdata/simpleupdates/scripts/update_simpleadmin.sh
     echo -e "\e[1;32mSimpleadmin content has been updated/installed.\e[0m"
-	sleep 1
+    sleep 1
     break
 }
 
@@ -382,67 +381,67 @@ uninstall_simpleadmin_components() {
     read -p "Enter your choice (1 or 2): " choice_socat_at_bridge
     if [ "$choice_socat_at_bridge" -eq 1 ]; then
         echo -e "\033[0;32mRemoving installed AT Socat Bridge services...\033[0m"
-		systemctl stop at-telnet-daemon > /dev/null 2>&1
-		systemctl disable at-telnet-daemon > /dev/null 2>&1
-		systemctl stop socat-smd11 > /dev/null 2>&1
-		systemctl stop socat-smd11-to-ttyIN > /dev/null 2>&1
-		systemctl stop socat-smd11-from-ttyIN > /dev/null 2>&1
-		systemctl stop socat-smd7 > /dev/null 2>&1
-		systemctl stop socat-smd7-to-ttyIN2 > /dev/null 2>&1
-		systemctl stop socat-smd7-to-ttyIN > /dev/null 2>&1
-		systemctl stop socat-smd7-from-ttyIN2 > /dev/null 2>&1
-		systemctl stop socat-smd7-from-ttyIN > /dev/null 2>&1
-		rm /lib/systemd/system/at-telnet-daemon.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd11.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd11-to-ttyIN.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd11-from-ttyIN.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd7.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd7-to-ttyIN2.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd7-to-ttyIN.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd7-from-ttyIN.service > /dev/null 2>&1
-		rm /lib/systemd/system/socat-smd7-from-ttyIN2.service > /dev/null 2>&1
-		systemctl daemon-reload > /dev/null 2>&1
-		rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
-		rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
-		rm -rf "/usrdata/micropython" > /dev/null 2>&1
-		rm -rf "/usrdata/at-telnet" > /dev/null 2>&1
-		echo -e "\033[0;32mAT Socat Bridge services removed!...\033[0m"
+        systemctl stop at-telnet-daemon > /dev/null 2>&1
+        systemctl disable at-telnet-daemon > /dev/null 2>&1
+        systemctl stop socat-smd11 > /dev/null 2>&1
+        systemctl stop socat-smd11-to-ttyIN > /dev/null 2>&1
+        systemctl stop socat-smd11-from-ttyIN > /dev/null 2>&1
+        systemctl stop socat-smd7 > /dev/null 2>&1
+        systemctl stop socat-smd7-to-ttyIN2 > /dev/null 2>&1
+        systemctl stop socat-smd7-to-ttyIN > /dev/null 2>&1
+        systemctl stop socat-smd7-from-ttyIN2 > /dev/null 2>&1
+        systemctl stop socat-smd7-from-ttyIN > /dev/null 2>&1
+        rm /lib/systemd/system/at-telnet-daemon.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd11.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd11-to-ttyIN.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd11-from-ttyIN.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd7.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd7-to-ttyIN2.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd7-to-ttyIN.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd7-from-ttyIN.service > /dev/null 2>&1
+        rm /lib/systemd/system/socat-smd7-from-ttyIN2.service > /dev/null 2>&1
+        systemctl daemon-reload > /dev/null 2>&1
+        rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
+        rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
+        rm -rf "/usrdata/micropython" > /dev/null 2>&1
+        rm -rf "/usrdata/at-telnet" > /dev/null 2>&1
+        echo -e "\033[0;32mAT Socat Bridge services removed!...\033[0m"
     fi
 
-	# Uninstall ttyd
+    # Uninstall ttyd
     echo -e "\e[1;32mDo you want to uninstall ttyd (simpleadmin console)?\e[0m"
-	echo -e "\e[1;31mWarning: Do not uninstall if you are currently using ttyd to do this!!!\e[0m"
+    echo -e "\e[1;31mWarning: Do not uninstall if you are currently using ttyd to do this!!!\e[0m"
     echo -e "\e[1;32m1) Yes\e[0m"
     echo -e "\e[1;31m2) No\e[0m"
     read -p "Enter your choice (1 or 2): " choice_simpleadmin
     if [ "$choice_simpleadmin" -eq 1 ]; then
-		echo -e "\e[1;34mUninstalling ttyd...\e[0m"
+        echo -e "\e[1;34mUninstalling ttyd...\e[0m"
         systemctl stop ttyd
         rm -rf /usrdata/ttyd
         rm /lib/systemd/system/ttyd.service
         rm /lib/systemd/system/multi-user.target.wants/ttyd.service
         rm /bin/ttyd
         echo -e "\e[1;32mttyd has been uninstalled.\e[0m"
-	fi
+    fi
 
-	echo "Uninstalling the rest of Simpleadmin..."
-		
-	# Check if Lighttpd service is installed and remove it if present
-	if [ -f "/lib/systemd/system/lighttpd.service" ]; then
-		echo "Lighttpd detected, uninstalling Lighttpd and its modules..."
-		systemctl stop lighttpd
-		opkg --force-remove --force-removal-of-dependent-packages remove lighttpd-mod-authn_file lighttpd-mod-auth lighttpd-mod-cgi lighttpd-mod-openssl lighttpd-mod-proxy lighttpd
-		rm -rf $LIGHTTPD_DIR
-	fi
+    echo "Uninstalling the rest of Simpleadmin..."
+        
+    # Check if Lighttpd service is installed and remove it if present
+    if [ -f "/lib/systemd/system/lighttpd.service" ]; then
+        echo "Lighttpd detected, uninstalling Lighttpd and its modules..."
+        systemctl stop lighttpd
+        opkg --force-remove --force-removal-of-dependent-packages remove lighttpd-mod-authn_file lighttpd-mod-auth lighttpd-mod-cgi lighttpd-mod-openssl lighttpd-mod-proxy lighttpd
+        rm -rf $LIGHTTPD_DIR
+    fi
 
-	systemctl stop simpleadmin_generate_status
-	systemctl stop simpleadmin_httpd
-	rm -f /lib/systemd/system/simpleadmin_httpd.service
-	rm -f /lib/systemd/system/simpleadmin_generate_status.service
-	systemctl daemon-reload
-	rm -rf "$SIMPLE_ADMIN_DIR"
-	echo "The rest of Simpleadmin and Lighttpd (if present) uninstalled."
-	remount_ro
+    systemctl stop simpleadmin_generate_status
+    systemctl stop simpleadmin_httpd
+    rm -f /lib/systemd/system/simpleadmin_httpd.service
+    rm -f /lib/systemd/system/simpleadmin_generate_status.service
+    systemctl daemon-reload
+    rm -rf "$SIMPLE_ADMIN_DIR"
+    echo "The rest of Simpleadmin and Lighttpd (if present) uninstalled."
+    remount_ro
 
     echo "Uninstallation process completed."
 }
@@ -451,9 +450,9 @@ uninstall_simpleadmin_components() {
 tailscale_menu() {
     while true; do
         echo -e "\e[1;32mTailscale Menu\e[0m"
-	echo -e "\e[1;32m1) Install/Update Tailscale\e[0m"
-	echo -e "\e[1;36m2) Configure Tailscale\e[0m"
-	echo -e "\e[1;31m3) Return to Main Menu\e[0m"
+        echo -e "\e[1;32m1) Install/Update Tailscale\e[0m"
+        echo -e "\e[1;36m2) Configure Tailscale\e[0m"
+        echo -e "\e[1;31m3) Return to Main Menu\e[0m"
         read -p "Enter your choice: " tailscale_choice
 
         case $tailscale_choice in
@@ -467,65 +466,79 @@ tailscale_menu() {
 
 # Function to install, update, or remove Tailscale
 install_update_tailscale() {
-echo -e "\e[1;31m2) Installing tailscale from the $GITTREE branch\e[0m"
-			ensure_entware_installed
-			mkdir /usrdata/simpleupdates > /dev/null 2>&1
-		    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-		    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_tailscale.sh $MYGITROOT/simpleupdates/scripts/update_tailscale.sh && chmod +x /usrdata/simpleupdates/scripts/update_tailscale.sh
-		    echo -e "\e[1;32mInstalling/updating: Tailscale\e[0m"
-			echo -e "\e[1;32mPlease Wait....\e[0m"
-			remount_rw
-   			/usrdata/simpleupdates/scripts/update_tailscale.sh
-			echo -e "\e[1;32m Tailscale has been updated/installed.\e[0m"
+    echo -e "\e[1;31m2) Installing tailscale from the $GITTREE branch\e[0m"
+    ensure_entware_installed
+    mkdir /usrdata/simpleupdates > /dev/null 2>&1
+    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_tailscale.sh $MYGITROOT/simpleupdates/scripts/update_tailscale.sh && chmod +x /usrdata/simpleupdates/scripts/update_tailscale.sh
+    echo -e "\e[1;32mInstalling/updating: Tailscale\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    remount_rw
+    /usrdata/simpleupdates/scripts/update_tailscale.sh
+    echo -e "\e[1;32m Tailscale has been updated/installed.\e[0m"
 }
 
 # Function to Configure Tailscale
 configure_tailscale() {
     while true; do
-    echo "Configure Tailscale"
-    echo -e "\e[38;5;40m1) Enable Tailscale Web UI at http://192.168.225.1:8088 (Gateway on port 8088)\e[0m"  # Green
-    echo -e "\e[38;5;196m2) Disable Tailscale Web UI\e[0m"  # Red
-    echo -e "\e[38;5;27m3) Connect to Tailnet\e[0m"  # Brown
-    echo -e "\e[38;5;87m4) Connect to Tailnet with SSH ON\e[0m"  # Light cyan
-    echo -e "\e[38;5;105m5) Reconnect to Tailnet with SSH OFF\e[0m"  # Light magenta
-    echo -e "\e[38;5;172m6) Disconnect from Tailnet (reconnects at reboot)\e[0m"  # Light yellow
-    echo -e "\e[1;31m7) Logout from tailscale account\e[0m"
-    echo -e "\e[38;5;27m8) Return to Tailscale Menu\e[0m"
-    read -p "Enter your choice: " config_choice
+        echo "Configure Tailscale"
+        echo -e "\e[38;5;40m1) Enable Tailscale Web UI at http://192.168.225.1:8088 (Gateway on port 8088)\e[0m"  # Green
+        echo -e "\e[38;5;196m2) Disable Tailscale Web UI\e[0m"  # Red
+        echo -e "\e[38;5;27m3) Connect to Tailnet\e[0m"  # Brown
+        echo -e "\e[38;5;87m4) Connect to Tailnet with SSH ON\e[0m"  # Light cyan
+        echo -e "\e[38;5;105m5) Reconnect to Tailnet with SSH OFF\e[0m"  # Light magenta
+        echo -e "\e[38;5;172m6) Disconnect from Tailnet (reconnects at reboot)\e[0m"  # Light yellow
+        echo -e "\e[1;31m7) Logout from tailscale account\e[0m"
+        echo -e "\e[38;5;27m8) Return to Tailscale Menu\e[0m"
+        read -p "Enter your choice: " config_choice
 
         case $config_choice in
         1)
-	remount_rw
-	cd /lib/systemd/system/
-	wget --no-check-certificate -O tailscale-webui.service $MYGITROOT/tailscale/systemd/tailscale-webui.service
-  	wget --no-check-certificate -O tailscale-webui-trigger.service $MYGITROOT/tailscale/systemd/tailscale-webui-trigger.service
-     	ln -sf /lib/systemd/system/tailscale-webui-trigger.service /lib/systemd/system/multi-user.target.wants/
-     	systemctl daemon-reload
-       	echo "Tailscale Web UI Enabled"
-	echo "Starting Web UI..." 
-     	systemctl start tailscale-webui
-       	echo "Web UI started!"
-     	remount_ro
-	;;
-	2) 
-	remount_rw
-  	systemctl stop tailscale-webui
-    	systemctl disable tailscale-webui-trigger
-  	rm /lib/systemd/system/multi-user.target.wants/tailscale-webui.service
-    	rm /lib/systemd/system/multi-user.target.wants/tailscale-webui-trigger.service
-    	rm /lib/systemd/system/tailscale-webui.service
-      	rm /lib/systemd/system/tailscale-webui-trigger.service
-     	systemctl daemon-reload
-       	echo "Tailscale Web UI Stopped and Disabled"
-     	remount_ro
-	;;
-	3) $TAILSCALE_DIR/tailscale up --accept-dns=false --reset;;
-    4) $TAILSCALE_DIR/tailscale up --ssh --accept-dns=false --reset;;
-	5) $TAILSCALE_DIR/tailscale up --accept-dns=false --reset;;
-     	6) $TAILSCALE_DIR/tailscale down;;
-        7) $TAILSCALE_DIR/tailscale logout;;
-        8) break;;
-        *) echo "Invalid option";;
+            remount_rw
+            cd /lib/systemd/system/
+            wget --no-check-certificate -O tailscale-webui.service $MYGITROOT/tailscale/systemd/tailscale-webui.service
+            wget --no-check-certificate -O tailscale-webui-trigger.service $MYGITROOT/tailscale/systemd/tailscale-webui-trigger.service
+            ln -sf /lib/systemd/system/tailscale-webui-trigger.service /lib/systemd/system/multi-user.target.wants/
+            systemctl daemon-reload
+            echo "Tailscale Web UI Enabled"
+            echo "Starting Web UI..." 
+            systemctl start tailscale-webui
+            echo "Web UI started!"
+            remount_ro
+            ;;
+        2) 
+            remount_rw
+            systemctl stop tailscale-webui
+            systemctl disable tailscale-webui-trigger
+            rm /lib/systemd/system/multi-user.target.wants/tailscale-webui.service
+            rm /lib/systemd/system/multi-user.target.wants/tailscale-webui-trigger.service
+            rm /lib/systemd/system/tailscale-webui.service
+            rm /lib/systemd/system/tailscale-webui-trigger.service
+            systemctl daemon-reload
+            echo "Tailscale Web UI Stopped and Disabled"
+            remount_ro
+            ;;
+        3)
+            $TAILSCALE_DIR/tailscale up --accept-dns=false --reset
+            ;;
+        4)
+            $TAILSCALE_DIR/tailscale up --ssh --accept-dns=false --reset
+            ;;
+        5)
+            $TAILSCALE_DIR/tailscale up --accept-dns=false --reset
+            ;;
+        6) 
+            $TAILSCALE_DIR/tailscale down
+            ;;
+        7) 
+            $TAILSCALE_DIR/tailscale logout
+            ;;
+        8)
+            break
+            ;;
+        *)
+            echo "Invalid option"
+            ;;
         esac
     done
 }
@@ -538,8 +551,8 @@ manage_reboot_timer() {
     # Check if the rebootmodem service, timer, or trigger already exists
     if [ -f /lib/systemd/system/rebootmodem.service ] || [ -f /lib/systemd/system/rebootmodem.timer ] || [ -f /lib/systemd/system/rebootmodem-trigger.service ]; then
         echo -e "\e[1;32mThe rebootmodem service/timer/trigger is already installed.\e[0m"
-	echo -e "\e[1;32m1) Change\e[0m"  # Green
-	echo -e "\e[1;31m2) Remove\e[0m"  # Red
+    echo -e "\e[1;32m1) Change\e[0m"  # Green
+    echo -e "\e[1;31m2) Remove\e[0m"  # Red
         read -p "Enter your choice (1 for Change, 2 for Remove): " reboot_choice
 
         case $reboot_choice in
@@ -664,8 +677,8 @@ manage_cfun_fix() {
 
     if [ -f "$cfun_service_path" ]; then
         echo -e "\e[1;32mThe CFUN fix is already installed. Do you want to remove it?\e[0m"  # Green
-	echo -e "\e[1;32m1) Yes\e[0m"  # Green
-	echo -e "\e[1;31m2) No\e[0m"   # Red
+        echo -e "\e[1;32m1) Yes\e[0m"  # Green
+        echo -e "\e[1;31m2) No\e[0m"   # Red
         read -p "Enter your choice: " choice
 
         if [ "$choice" = "1" ]; then
@@ -701,8 +714,8 @@ RemainAfterExit=yes
 WantedBy=multi-user.target" > "$cfun_service_path"
 
         ln -sf "$cfun_service_path" "/lib/systemd/system/multi-user.target.wants/"
-	systemctl daemon-reload
- 	mount -o remount,ro /
+        systemctl daemon-reload
+        mount -o remount,ro /
         echo -e "\e[1;32mCFUN fix has been installed and will execute at every boot.\e[0m"
     fi
 }
@@ -718,7 +731,7 @@ install_sshd() {
 
         case $sshd_choice in
             1)
-				echo -e "\e[1;31m2) Installing sshd from the $GITTREE branch\e[0m"
+                echo -e "\e[1;31m2) Installing sshd from the $GITTREE branch\e[0m"
                 ;;
             2)
                 echo -e "\e[1;31mUninstalling SSHD...\e[0m"
@@ -736,16 +749,53 @@ install_sshd() {
     fi
 
     # Proceed with installation or updating if not uninstalling
-	ensure_entware_installed
+    ensure_entware_installed
     mkdir /usrdata/simpleupdates > /dev/null 2>&1
-	mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_sshd.sh $MYGITROOT/simpleupdates/scripts/update_sshd.sh && chmod +x /usrdata/simpleupdates/scripts/update_sshd.sh
-	echo -e "\e[1;32mInstalling/updating: SSHd\e[0m"
-	echo -e "\e[1;32mPlease Wait....\e[0m"
-	/usrdata/simpleupdates/scripts/update_sshd.sh
-	echo -e "\e[1;32m SSHd has been updated/installed.\e[0m"
+    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_sshd.sh $MYGITROOT/simpleupdates/scripts/update_sshd.sh && chmod +x /usrdata/simpleupdates/scripts/update_sshd.sh
+    echo -e "\e[1;32mInstalling/updating: SSHd\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    /usrdata/simpleupdates/scripts/update_sshd.sh
+    echo -e "\e[1;32mSSHd has been updated/installed.\e[0m"
 }
 
+install_iperf3() {
+    if [ -d "/usrdata/iperf3" ]; then
+        echo -e "\e[1;31miperf3 is currently installed.\e[0m"
+        echo -e "Do you want to update or uninstall?"
+        echo -e "1.) Update"
+        echo -e "2.) Uninstall"
+        read -p "Select an option (1 or 2): " iperf3_choice
+
+        case $iperf3_choice in
+            1)
+                echo -e "\e[1;31m2) Installing iperf3 from the $GITTREE branch\e[0m"
+                ;;
+            2)
+                echo -e "\e[1;31mUninstalling iperf3...\e[0m"
+                systemctl stop iperf3
+                rm /lib/systemd/system/iperf3.service
+                opkg remove iperf3
+                echo -e "\e[1;32miperf3 has been uninstalled successfully.\e[0m"
+                return 0
+                ;;
+            *)
+                echo -e "\e[1;31mInvalid option. Please select 1 or 2.\e[0m"
+                return 1
+                ;;
+        esac
+    fi
+
+    # Proceed with installation or updating if not uninstalling
+    ensure_entware_installed
+    mkdir /usrdata/simpleupdates > /dev/null 2>&1
+    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
+    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_iperf3.sh $MYGITROOT/simpleupdates/scripts/update_iperf3.sh && chmod +x /usrdata/simpleupdates/scripts/update_iperf3.sh
+    echo -e "\e[1;32mInstalling/updating: iperf3\e[0m"
+    echo -e "\e[1;32mPlease Wait....\e[0m"
+    /usrdata/simpleupdates/scripts/update_iperf3.sh
+    echo -e "\e[1;32miperf3 has been updated/installed.\e[0m"
+}
 
 # Main menu
 
@@ -758,71 +808,11 @@ elif echo "$ARCH" | grep -q "armv7l"; then
     echo "Architecture is armv7l, continuing..."
 else
     uname -a
-	echo "Unsupported architecture."
+    echo "Unsupported architecture."
     exit 1
 fi
 
 while true; do
-echo "                           .%+:                              "
-echo "                             .*@@@-.                         "
-echo "                                  :@@@@-                     "
-echo "                                     @@@@#.                  "
-echo "                                      -@@@@#.                "
-echo "       :.                               %@@@@: -#            "
-echo "      .+-                                #@@@@%.+@-          "
-echo "      .#- .                               +@@@@# #@-         "
-echo "    -@*@*@%                                @@@@@::@@=        "
-echo ".+%@@@@@@@@@%=.                            =@@@@# #@@- ..    "
-echo "    .@@@@@:                                :@@@@@ =@@@..%=   "
-echo "    -::@-.+.                                @@@@@.=@@@- =@-  "
-echo "      .@-                                  .@@@@@:.@@@*  @@. "
-echo "      .%-                                  -@@@@@:=@@@@  @@# "
-echo "      .#-         .%@@@@@@#.               +@@@@@.#@@@@  @@@."
-echo "      .*-            .@@@@@@@@@@=.         @@@@@@ @@@@@  @@@:"
-echo "       :.             .%@@@@@@@@@@@%.     .@@@@@+:@@@@@  @@@-"
-echo "                        -@@@@@@@@@@@@@@@..@@@@@@.-@@@@@ .@@@-"
-echo "                         -@@@@@@@@@@%.  .@@@@@@. @@@@@+ =@@@="
-echo "                           =@@@@@@@@*  .@@@@@@. @@@@@@..@@@@-"
-echo "                            #@@@@@@@@-*@@@@@%..@@@@@@+ #@@@@-"
-echo "                            @@@@@@:.-@@@@@@.  @@@@@@= %@@@@@."
-echo "                           .@@@@. *@@@@@@- .+@@@@@@-.@@@@@@+ "
-echo "                           %@@. =@@@@@*.  +@@@@@@%.-@@@@@@%  "
-echo "                          .@@ .@@@@@=  :@@@@@@@@..@@@@@@@=   "
-echo "                          =@.+@@@@@. -@@@@@@@*.:@@@@@@@*.    "
-echo "                          %.*@@@@= .@@@@@@@-.:@@@@@@@+.      "
-echo "                          ..@@@@= .@@@@@@: #@@@@@@@:         "
-echo "                           .@@@@  +@@@@..%@@@@@+.            "
-echo "                           .@@@.  @@@@.:@@@@+.               "
-echo "                            @@@.  @@@. @@@*    .@.           "
-echo "                            :@@@  %@@..@@#.    *@            "
-echo "                         -*: .@@* :@@. @@.  -..@@            "
-echo "                       =@@@@@@.*@- :@%  @* =@:=@#            "
-echo "                      .@@@-+@@@@:%@..%- ...@%:@@:            "
-echo "                      .@@.  @@-%@:      .%@@*@@%.            "
-echo "                       :@@ :+   *@     *@@#*@@@.             "
-echo "                                     =@@@.@@@@               "
-echo "                                  .*@@@:=@@@@:               "
-echo "                                .@@@@:.@@@@@:                "
-echo "                              .@@@@#.-@@@@@.                 "
-echo "                             #@@@@: =@@@@@-                  "
-echo "                           .@@@@@..@@@@@@*                   "
-echo "                          -@@@@@. @@@@@@#.                   "
-echo "                         -@@@@@  @@@@@@%                     "
-echo "                         @@@@@. #@@@@@@.                     "
-echo "                        :@@@@# =@@@@@@%                      "
-echo "                        @@@@@: @@@@@@@:                      "
-echo "                        *@@@@  @@@@@@@.                      "
-echo "                        .@@@@  @@@@@@@                       "
-echo "                         #@@@. @@@@@@*                       "
-echo "                          @@@# @@@@@@@                       "
-echo "                           .@@+=@@@@@@.                      "
-echo "                                *@@@@@@                      "
-echo "                                 :@@@@@=                     "
-echo "                                  .@@@@@@.                   "
-echo "                                    :@@@@@*.                 "
-echo "                                      .=@@@@@-               "
-echo "                                           :+##+.            "
-
     echo -e "\e[92m"
     echo "Welcome to iamromulan's RGMII Toolkit script for Quectel RMxxx Series modems!"
     echo "Visit https://github.com/iamromulan for more!"
@@ -831,9 +821,9 @@ echo "                                           :+##+.            "
     echo -e "\e[0m"
     echo -e "\e[96m1) Send AT Commands\e[0m" # Cyan
     echo -e "\e[93m2) Install Simple Admin\e[0m" # Yellow
-	echo -e "\e[95m3) Set Simpleadmin (admin) password\e[0m" # Light Purple
-	echo -e "\e[94m4) Set Console/ttyd (root) password\e[0m" # Light Blue
-    echo -e "\e[91m5) Uninstall Simple Admin\e[0m" # Light Red	
+    echo -e "\e[95m3) Set Simpleadmin (admin) password\e[0m" # Light Purple
+    echo -e "\e[94m4) Set Console/ttyd (root) password\e[0m" # Light Blue
+    echo -e "\e[91m5) Uninstall Simple Admin\e[0m" # Light Red    
     echo -e "\e[95m6) Simple Firewall Management\e[0m" # Light Purple
     echo -e "\e[94m7) Tailscale Management\e[0m" # Light Blue
     echo -e "\e[92m8) Install/Change or remove Daily Reboot Timer\e[0m" # Light Green
@@ -841,8 +831,10 @@ echo "                                           :+##+.            "
     echo -e "\e[91m10) Uninstall Entware/OPKG\e[0m" # Light Red
     echo -e "\e[92m11) Install Speedtest.net CLI app (speedtest command)\e[0m" # Light Green
     echo -e "\e[92m12) Install Fast.com CLI app (fast command)(tops out at 40Mbps)\e[0m" # Light Green
-    echo -e "\e[92m13) Install OpenSSH Server\e[0m" # Light Green
-    echo -e "\e[93m14) Exit\e[0m" # Yellow (repeated color for exit option)
+    echo -e "\e[92m13) Install busybox command (armv7l version)\e[0m" # Light Green
+    echo -e "\e[92m14) Install OpenSSH Server\e[0m" # Light Green
+    echo -e "\e[92m15) Install iperf3 Server\e[0m" # Light Green
+    echo -e "\e[93m16) Exit\e[0m" # Yellow (repeated color for exit option)
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -852,95 +844,113 @@ echo "                                           :+##+.            "
         2)
             install_simple_admin
             ;;
-		3)	set_simpleadmin_passwd
-			;;
-		4)
-			set_root_passwd
-			;;
-		5)
-			uninstall_simpleadmin_components
-			;;
-		6)
-			configure_simple_firewall
+        3)
+            set_simpleadmin_passwd
+            ;;
+        4)
+            set_root_passwd
+            ;;
+        5)
+            uninstall_simpleadmin_components
+            ;;
+        6)
+            configure_simple_firewall
             ;;
         
         7)  
-			tailscale_menu
-	        ;;
-		8)
-			manage_reboot_timer
+            tailscale_menu
             ;;
-		9)
-			manage_cfun_fix
-            ;;	    
-		10)
-			echo -e "\033[31mAre you sure you want to uninstall entware?\033[0m"
-			echo -e "\033[31m1) Yes\033[0m"
-			echo -e "\033[31m2) No\033[0m"
-			read -p "Select an option (1 or 2): " user_choice
+        8)
+            manage_reboot_timer
+            ;;
+        9)
+            manage_cfun_fix
+            ;;        
+        10)
+            echo -e "\033[31mAre you sure you want to uninstall entware?\033[0m"
+            echo -e "\033[31m1) Yes\033[0m"
+            echo -e "\033[31m2) No\033[0m"
+            read -p "Select an option (1 or 2): " user_choice
 
-			case $user_choice in
-				1)
-					# If yes, uninstall existing entware
-					echo -e "\033[31mUninstalling existing entware...\033[0m"
-					uninstall_entware  # Assuming uninstall_entware is a defined function or command
-					echo -e "\033[31mEntware has been uninstalled.\033[0m"
-					;;
-				2)
-					# If no, exit the script
-					echo -e "\033[31mUninstallation cancelled.\033[0m"
-					exit  # Use 'exit' to terminate the script outside a loop
-					;;
-				*)
-					# Handle invalid input
-					echo -e "\033[31mInvalid option. Please select 1 or 2.\033[0m"
-					;;
-			esac
-			;;
+            case $user_choice in
+                1)
+                    # If yes, uninstall existing entware
+                    echo -e "\033[31mUninstalling existing entware...\033[0m"
+                    uninstall_entware  # Assuming uninstall_entware is a defined function or command
+                    echo -e "\033[31mEntware has been uninstalled.\033[0m"
+                    ;;
+                2)
+                    # If no, exit the script
+                    echo -e "\033[31mUninstallation cancelled.\033[0m"
+                    exit  # Use 'exit' to terminate the script outside a loop
+                    ;;
+                *)
+                    # Handle invalid input
+                    echo -e "\033[31mInvalid option. Please select 1 or 2.\033[0m"
+                    ;;
+            esac
+            ;;
 
-		11) 
-			ensure_entware_installed
-			echo -e "\e[1;32mInstalling Speedtest.net CLI (speedtest command)\e[0m"
-     	    remount_rw
-			mkdir /usrdata/root
-     	    mkdir /usrdata/root/bin
-			cd /usrdata/root/bin
-     	    wget --no-check-certificate https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
-			tar -xzf ookla-speedtest-1.2.0-linux-armhf.tgz
-     	    rm ookla-speedtest-1.2.0-linux-armhf.tgz
-			rm speedtest.md
-     	    cd /
-			ln -sf /usrdata/root/bin/speedtest /bin
-     	    remount_ro
-			echo -e "\e[1;32mSpeedtest CLI (speedtest command) installed!!\e[0m"
-     	    echo -e "\e[1;32mTry running the command 'speedtest'\e[0m"
-			echo -e "\e[1;32mNote that it will not work unless you login to the root account first\e[0m"
-			echo -e "\e[1;32mNormaly only an issue in adb, ttyd and ssh you are forced to login\e[0m"
-			echo -e "\e[1;32mIf in adb just type login and then try to run the speedtest command\e[0m"
+        11) 
+            ensure_entware_installed
+            echo -e "\e[1;32mInstalling Speedtest.net CLI (speedtest command)\e[0m"
+            remount_rw
+            mkdir /usrdata/root
+            mkdir /usrdata/root/bin
+            cd /usrdata/root/bin
+            wget --no-check-certificate https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
+            tar -xzf ookla-speedtest-1.2.0-linux-armhf.tgz
+            rm ookla-speedtest-1.2.0-linux-armhf.tgz
+            rm speedtest.md
+            cd /
+            ln -sf /usrdata/root/bin/speedtest /bin
+            remount_ro
+            echo -e "\e[1;32mSpeedtest CLI (speedtest command) installed!!\e[0m"
+            echo -e "\e[1;32mTry running the command 'speedtest'\e[0m"
+            echo -e "\e[1;32mNote that it will not work unless you login to the root account first\e[0m"
+            echo -e "\e[1;32mNormaly only an issue in adb, ttyd and ssh you are forced to login\e[0m"
+            echo -e "\e[1;32mIf in adb just type login and then try to run the speedtest command\e[0m"
             ;;
-		12) 
-			echo -e "\e[1;32mInstalling fast.com CLI (fast command)\e[0m"
-     	    remount_rw
-			mkdir /usrdata/root
-     	    mkdir /usrdata/root/bin
-			cd /usrdata/root/bin
-     	    wget --no-check-certificate -O fast $MYGITROOT/fast_linux_arm && chmod +x fast
-     	    cd /
-			ln -sf /usrdata/root/bin/fast /bin
-     	    remount_ro
-			echo -e "\e[1;32mFast.com CLI (speedtest command) installed!!\e[0m"
-     	    echo -e "\e[1;32mTry running the command 'fast'\e[0m"
-			echo -e "\e[1;32mThe fast.com test tops out at 40Mbps on the modem\e[0m"
+        12) 
+            echo -e "\e[1;32mInstalling fast.com CLI (fast command)\e[0m"
+            remount_rw
+            mkdir /usrdata/root
+            mkdir /usrdata/root/bin
+            cd /usrdata/root/bin
+            wget --no-check-certificate -O fast $MYGITROOT/fast_linux_arm && chmod +x fast
+            cd /
+            ln -sf /usrdata/root/bin/fast /bin
+            remount_ro
+            echo -e "\e[1;32mFast.com CLI (speedtest command) installed!!\e[0m"
+            echo -e "\e[1;32mTry running the command 'fast'\e[0m"
+            echo -e "\e[1;32mThe fast.com test tops out at 40Mbps on the modem\e[0m"
             ;;
-		13) 
-			install_sshd
-			;;
-		14) 
-			echo -e "\e[1;32mGoodbye!\e[0m"
-     	    break
+        13) 
+            echo -e "\e[1;32mInstalling busybox command (armv7l version)\e[0m"
+            remount_rw
+            mkdir /usrdata/root
+            mkdir /usrdata/root/bin
+            cd /usrdata/root/bin
+            wget --no-check-certificate -O busybox.armv7l $MYGITROOT/busybox.armv7l && chmod +x busybox.armv7l
+            cd /
+            ln -sf /usrdata/root/bin/busybox.armv7l /bin
+            remount_ro
+            echo -e "\e[1;32mbusybox command (armv7l version) installed!!\e[0m"
+            echo -e "\e[1;32mTry running the command 'busybox.armv7l'\e[0m"
+            echo -e "\e[1;32mTry running the command '/usrdata/root/bin/busybox.armv7l tcpsvd -xE 0.0.0.0 21 /usrdata/root/bin/busybox.armv7l ftpd -wA /'\e[0m"
+            ;;
+        14) 
+            install_sshd
+            ;;
+        15) 
+            install_iperf3
+            ;;
+        16) 
+            echo -e "\e[1;32mGoodbye!\e[0m"
+            break
             ;;    
-    *)
-			echo -e "\e[1;31mInvalid option\e[0m"
+        *)
+            echo -e "\e[1;31mInvalid option\e[0m"
             ;;
     esac
 done

@@ -14,10 +14,10 @@ MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Develo
 
 # Define filesystem path
 DIR_NAME="simpleupdates"
-SERVICE_FILE="/lib/systemd/system/install_sshd.service"
-SERVICE_NAME="install_sshd"
-TMP_SCRIPT="/tmp/install_sshd.sh"
-LOG_FILE="/tmp/install_sshd.log"
+SERVICE_FILE="/lib/systemd/system/install_iperf3.service"
+SERVICE_NAME="install_iperf3"
+TMP_SCRIPT="/tmp/install_iperf3.sh"
+LOG_FILE="/tmp/install_iperf3.log"
 
 # Tmp Script dependent constants 
 
@@ -51,36 +51,28 @@ GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
 MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 
-install_sshd() {
-    echo -e "\e[1;32mOpenSSH Server\e[0m"
+install_iperf3() {
+    echo -e "\e[1;32miperf3 Server\e[0m"
     remount_rw
 
-    mkdir /usrdata/sshd
-    wget --no-check-certificate -O /lib/systemd/system/sshd.service "$MYGITROOT/sshd/sshd.service"
-    ln -sf "/lib/systemd/system/sshd.service" "/lib/systemd/system/multi-user.target.wants/"
+    mkdir /usrdata/iperf3
+    wget --no-check-certificate -O /lib/systemd/system/iperf3.service "$MYGITROOT/iperf3/iperf3.service"
+    ln -sf "/lib/systemd/system/iperf3.service" "/lib/systemd/system/multi-user.target.wants/"
 
-    opkg install openssh-server-pam
-    for script in /opt/etc/init.d/*sshd*; do
+    opkg install iperf3
+    for script in /opt/etc/init.d/*iperf3*; do
     if [ -f "$script" ]; then
-        echo "Removing existing sshd init script: $script"
-        rm "$script" # Remove the script if it contains 'sshd' in its name
+        echo "Removing existing iperf3 init script: $script"
+        rm "$script" # Remove the script if it contains 'iperf3' in its name
     fi
     done
-    /opt/bin/ssh-keygen -A
     systemctl daemon-reload
-    systemctl enable sshd
+    systemctl enable iperf3
+    systemctl start iperf3
 
-    # Enable PAM and PermitRootLogin
-    sed -i "s/^.*UsePAM .*/UsePAM yes/" "/opt/etc/ssh/sshd_config"
-    sed -i "s/^.*PermitRootLogin .*/PermitRootLogin yes/" "/opt/etc/ssh/sshd_config"
-
-    # Ensure the sshd user exists in the /opt/etc/passwd file
-    grep "sshd:x:106" /opt/etc/passwd || echo "sshd:x:106:65534:Linux User,,,:/opt/run/sshd:/bin/nologin" >> /opt/etc/passwd
-    systemctl start sshd
-
-    echo -e "\e[1;32mOpenSSH installed!!\e[0m"
+    echo -e "\e[1;32miperf3 installed!!\e[0m"
 }
-install_sshd
+install_iperf3
 exit 0
 EOF
 

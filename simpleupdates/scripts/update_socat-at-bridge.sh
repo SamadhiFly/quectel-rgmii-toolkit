@@ -75,45 +75,45 @@ remount_ro() {
 }
 remount_rw
 uninstall_at_socat() {
-	echo -e "\033[0;32mRemoving installed AT Socat Bridge services...\033[0m"
-	systemctl stop at-telnet-daemon > /dev/null 2>&1
-	systemctl disable at-telnet-daemon > /dev/null 2>&1
-	systemctl stop socat-smd11 > /dev/null 2>&1
-	systemctl stop socat-smd11-to-ttyIN > /dev/null 2>&1
-	systemctl stop socat-smd11-from-ttyIN > /dev/null 2>&1
-	systemctl stop socat-smd7 > /dev/null 2>&1
-	systemctl stop socat-smd7-to-ttyIN2 > /dev/null 2>&1
-	systemctl stop socat-smd7-to-ttyIN > /dev/null 2>&1
-	systemctl stop socat-smd7-from-ttyIN2 > /dev/null 2>&1
-	systemctl stop socat-smd7-from-ttyIN > /dev/null 2>&1
-	rm /lib/systemd/system/at-telnet-daemon.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd11.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd11-to-ttyIN.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd11-from-ttyIN.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd7.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd7-to-ttyIN2.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd7-to-ttyIN.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd7-from-ttyIN.service > /dev/null 2>&1
-	rm /lib/systemd/system/socat-smd7-from-ttyIN2.service > /dev/null 2>&1
-	systemctl daemon-reload > /dev/null 2>&1
-	rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
+    echo -e "\033[0;32mRemoving installed AT Socat Bridge services...\033[0m"
+    systemctl stop at-telnet-daemon > /dev/null 2>&1
+    systemctl disable at-telnet-daemon > /dev/null 2>&1
+    systemctl stop socat-smd11 > /dev/null 2>&1
+    systemctl stop socat-smd11-to-ttyIN > /dev/null 2>&1
+    systemctl stop socat-smd11-from-ttyIN > /dev/null 2>&1
+    systemctl stop socat-smd7 > /dev/null 2>&1
+    systemctl stop socat-smd7-to-ttyIN2 > /dev/null 2>&1
+    systemctl stop socat-smd7-to-ttyIN > /dev/null 2>&1
+    systemctl stop socat-smd7-from-ttyIN2 > /dev/null 2>&1
+    systemctl stop socat-smd7-from-ttyIN > /dev/null 2>&1
+    rm /lib/systemd/system/at-telnet-daemon.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd11.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd11-to-ttyIN.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd11-from-ttyIN.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd7.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd7-to-ttyIN2.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd7-to-ttyIN.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd7-from-ttyIN.service > /dev/null 2>&1
+    rm /lib/systemd/system/socat-smd7-from-ttyIN2.service > /dev/null 2>&1
+    systemctl daemon-reload > /dev/null 2>&1
+    rm -rf "$SOCAT_AT_DIR" > /dev/null 2>&1
 }
 
 install_at_socat() {
-	# Install service units
-	echo -e "\033[0;32mInstalling AT Socat Bridge services...\033[0m"
-	mkdir $SOCAT_AT_DIR
+    # Install service units
+    echo -e "\033[0;32mInstalling AT Socat Bridge services...\033[0m"
+    mkdir $SOCAT_AT_DIR
     cd $SOCAT_AT_DIR
     mkdir $SOCAT_AT_SYSD_DIR
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/socat-armel-static
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/killsmd7bridge
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/atcmd
-	wget --no-check-certificate $MYGITROOT/socat-at-bridge/atcmd11
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/atcmd11
     cd $SOCAT_AT_SYSD_DIR
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11.service
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11-from-ttyIN.service
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11-to-ttyIN.service
-    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-killsmd7bridge.service	
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-killsmd7bridge.service    
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7-from-ttyIN2.service
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7-to-ttyIN2.service
     wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7.service
@@ -123,12 +123,12 @@ install_at_socat() {
     chmod +x socat-armel-static
     chmod +x killsmd7bridge
     chmod +x atcmd
-	chmod +x atcmd11
-	
+    chmod +x atcmd11
+    
     # Link new command for AT Commands from the shell
     ln -sf $SOCAT_AT_DIR/atcmd /bin
-	ln -sf $SOCAT_AT_DIR/atcmd11 /bin
-	
+    ln -sf $SOCAT_AT_DIR/atcmd11 /bin
+    
     # Install service units
     echo -e "\033[0;32mAdding AT Socat Bridge systemd service units...\033[0m"
     cp -rf $SOCAT_AT_SYSD_DIR/*.service /lib/systemd/system

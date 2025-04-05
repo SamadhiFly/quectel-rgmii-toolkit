@@ -1,0 +1,16 @@
+[Unit]
+Description=iperf3 server
+Documentation=man:iperf3(1)
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/opt/var/run/iperf3.pid
+ExecStart=/opt/bin/iperf3 -s
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=iperf3.service

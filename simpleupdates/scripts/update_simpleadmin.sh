@@ -82,26 +82,26 @@ remount_ro() {
 }
 remount_rw
 uninstall_simpleadmin() {
-	echo "Uninstalling Simpleadmin..."
-		
-	# Check if Lighttpd service is installed and remove it if present
-	if [ -f "/lib/systemd/system/lighttpd.service" ]; then
-		echo "Lighttpd detected, uninstalling Lighttpd webserver and its modules..."
-		systemctl stop lighttpd
-		rm -f /lib/systemd/system/lighttpd.service
-		opkg --force-remove --force-removal-of-dependent-packages remove lighttpd-mod-authn_file lighttpd-mod-auth lighttpd-mod-cgi lighttpd-mod-openssl lighttpd-mod-proxy lighttpd
-	fi
-	echo -e "\e[1;34mUninstalling simpleadmin content...\e[0m"
-	systemctl stop simpleadmin_generate_status
-	systemctl stop simpleadmin_httpd
-	rm -f /lib/systemd/system/simpleadmin_httpd.service
-	rm -f /lib/systemd/system/simpleadmin_generate_status.service
-	systemctl daemon-reload
-	
-	echo -e "\e[1;34mUninstalling ttyd...\e[0m"
+    echo "Uninstalling Simpleadmin..."
+        
+    # Check if Lighttpd service is installed and remove it if present
+    if [ -f "/lib/systemd/system/lighttpd.service" ]; then
+        echo "Lighttpd detected, uninstalling Lighttpd webserver and its modules..."
+        systemctl stop lighttpd
+        rm -f /lib/systemd/system/lighttpd.service
+        opkg --force-remove --force-removal-of-dependent-packages remove lighttpd-mod-authn_file lighttpd-mod-auth lighttpd-mod-cgi lighttpd-mod-openssl lighttpd-mod-proxy lighttpd
+    fi
+    echo -e "\e[1;34mUninstalling simpleadmin content...\e[0m"
+    systemctl stop simpleadmin_generate_status
+    systemctl stop simpleadmin_httpd
+    rm -f /lib/systemd/system/simpleadmin_httpd.service
+    rm -f /lib/systemd/system/simpleadmin_generate_status.service
+    systemctl daemon-reload
+    
+    echo -e "\e[1;34mUninstalling ttyd...\e[0m"
     systemctl stop ttyd
     rm -rf /usrdata/ttyd
-	rm -rf "$SIMPLE_ADMIN_DIR"
+    rm -rf "$SIMPLE_ADMIN_DIR"
     rm -f /lib/systemd/system/ttyd.service
     rm -f /lib/systemd/system/multi-user.target.wants/ttyd.service
     rm -f /bin/ttyd
@@ -111,7 +111,7 @@ uninstall_simpleadmin() {
 }
 
 install_lighttpd() {
-	# Check for simpleadmin_httpd service and remove if exists
+    # Check for simpleadmin_httpd service and remove if exists
     if [ -f "/lib/systemd/system/simpleadmin_httpd.service" ]; then
         systemctl stop simpleadmin_httpd
         rm /lib/systemd/system/simpleadmin_httpd.service
@@ -147,80 +147,80 @@ install_lighttpd() {
 install_simpleadmin() {
 remount_rw
 echo -e "\e[1;31m2) Installing simpleadmin from the $GITTREE branch\e[0m"
-			mkdir $SIMPLE_ADMIN_DIR
-			mkdir $SIMPLE_ADMIN_DIR/systemd
-			mkdir $SIMPLE_ADMIN_DIR/script
-    		mkdir $SIMPLE_ADMIN_DIR/console
-			mkdir $SIMPLE_ADMIN_DIR/console/menu
-			mkdir $SIMPLE_ADMIN_DIR/console/services
-			mkdir $SIMPLE_ADMIN_DIR/console/services/systemd
-      		mkdir $SIMPLE_ADMIN_DIR/www
-			mkdir $SIMPLE_ADMIN_DIR/www/cgi-bin
-			mkdir $SIMPLE_ADMIN_DIR/www/css
-    		mkdir $SIMPLE_ADMIN_DIR/www/js
+            mkdir $SIMPLE_ADMIN_DIR
+            mkdir $SIMPLE_ADMIN_DIR/systemd
+            mkdir $SIMPLE_ADMIN_DIR/script
+            mkdir $SIMPLE_ADMIN_DIR/console
+            mkdir $SIMPLE_ADMIN_DIR/console/menu
+            mkdir $SIMPLE_ADMIN_DIR/console/services
+            mkdir $SIMPLE_ADMIN_DIR/console/services/systemd
+              mkdir $SIMPLE_ADMIN_DIR/www
+            mkdir $SIMPLE_ADMIN_DIR/www/cgi-bin
+            mkdir $SIMPLE_ADMIN_DIR/www/css
+            mkdir $SIMPLE_ADMIN_DIR/www/js
             cd $SIMPLE_ADMIN_DIR/systemd
             wget --no-check-certificate $MYGITROOT/simpleadmin/systemd/lighttpd.service
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/script
-			wget --no-check-certificate $MYGITROOT/simpleadmin/script/ttl_script.sh
-			wget --no-check-certificate $MYGITROOT/simpleadmin/script/remove_watchcat.sh
-			wget --no-check-certificate $MYGITROOT/simpleadmin/script/create_watchcat.sh
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/console
-			wget --no-check-certificate $MYGITROOT/simpleadmin/console/.profile
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/console/menu
-			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
-			ln -f $SIMPLE_ADMIN_DIR/console/menu/start_menu.sh /usrdata/root/bin/menu
-			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/sfirewall_settings.sh
-			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/www
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/deviceinfo.html
-   			wget --no-check-certificate $MYGITROOT/simpleadmin/www/favicon.ico
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/index.html
-    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/network.html
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/settings.html
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/sms.html
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/scanner.html
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/watchcat.html
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/www/js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/alpinejs.min.js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/bootstrap.bundle.min.js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/dark-mode.js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/generate-freq-box.js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/parse-settings.js
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/populate-checkbox.js
-    		sleep 1
-    		cd $SIMPLE_ADMIN_DIR/www/css
-    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/bootstrap.min.css
-      		wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/styles.css
-			sleep 1
-			cd $SIMPLE_ADMIN_DIR/www/cgi-bin
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_atcommand
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/user_atcommand
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ping
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_sms
-    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ttl_status
-      		wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_ttl
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/send_sms
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_uptime
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_watchcat_status
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_watchcat
-			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/watchcat_maker
-			sleep 1
-			cd /
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/script
+            wget --no-check-certificate $MYGITROOT/simpleadmin/script/ttl_script.sh
+            wget --no-check-certificate $MYGITROOT/simpleadmin/script/remove_watchcat.sh
+            wget --no-check-certificate $MYGITROOT/simpleadmin/script/create_watchcat.sh
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/console
+            wget --no-check-certificate $MYGITROOT/simpleadmin/console/.profile
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/console/menu
+            wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
+            ln -f $SIMPLE_ADMIN_DIR/console/menu/start_menu.sh /usrdata/root/bin/menu
+            wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/sfirewall_settings.sh
+            wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/www
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/deviceinfo.html
+               wget --no-check-certificate $MYGITROOT/simpleadmin/www/favicon.ico
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/index.html
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/network.html
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/settings.html
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/sms.html
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/scanner.html
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/watchcat.html
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/www/js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/alpinejs.min.js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/bootstrap.bundle.min.js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/dark-mode.js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/generate-freq-box.js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/parse-settings.js
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/populate-checkbox.js
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/www/css
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/bootstrap.min.css
+              wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/styles.css
+            sleep 1
+            cd $SIMPLE_ADMIN_DIR/www/cgi-bin
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_atcommand
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/user_atcommand
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ping
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_sms
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ttl_status
+              wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_ttl
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/send_sms
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_uptime
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_watchcat_status
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_watchcat
+            wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/watchcat_maker
+            sleep 1
+            cd /
             chmod +x $SIMPLE_ADMIN_DIR/www/cgi-bin/*
-			chmod +x $SIMPLE_ADMIN_DIR/script/*
-			chmod +x $SIMPLE_ADMIN_DIR/console/menu/*
-			chmod +x $SIMPLE_ADMIN_DIR/console/.profile
-			cp -f $SIMPLE_ADMIN_DIR/console/.profile /usrdata/root/.profile
-			chmod +x /usrdata/root/.profile
+            chmod +x $SIMPLE_ADMIN_DIR/script/*
+            chmod +x $SIMPLE_ADMIN_DIR/console/menu/*
+            chmod +x $SIMPLE_ADMIN_DIR/console/.profile
+            cp -f $SIMPLE_ADMIN_DIR/console/.profile /usrdata/root/.profile
+            chmod +x /usrdata/root/.profile
             cp -rf $SIMPLE_ADMIN_DIR/systemd/* /lib/systemd/system
-			sleep 1
+            sleep 1
             systemctl daemon-reload
-			sleep 1
+            sleep 1
 }
 install_ttyd() {
     echo -e "\e[1;34mStarting ttyd installation process...\e[0m"
@@ -228,7 +228,7 @@ install_ttyd() {
     curl -k -L -o ttyd $MYGITROOT/ttyd.armhf && chmod +x ttyd
     wget --no-check-certificate "$MYGITROOT/simpleadmin/console/ttyd.bash" && chmod +x ttyd.bash
     cd $SIMPLE_ADMIN_DIR/systemd/
-	wget --no-check-certificate "$MYGITROOT/simpleadmin/systemd/ttyd.service"
+    wget --no-check-certificate "$MYGITROOT/simpleadmin/systemd/ttyd.service"
     cp -f $SIMPLE_ADMIN_DIR/systemd/ttyd.service /lib/systemd/system/
     ln -sf /usrdata/simpleadmin/ttyd /bin
 

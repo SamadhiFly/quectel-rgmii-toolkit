@@ -88,7 +88,7 @@ install_update_tailscale() {
         ln -sf "$TAILSCALE_DIR/tailscale" "/usrdata/root/bin/tailscale"
         echo y | $TAILSCALE_DIR/tailscale update
         echo -e "\e[32mTailscale updated!\e[0m"
-	remount_ro
+    remount_ro
         exit 0
     else
         echo "Installing Tailscale..."
@@ -97,7 +97,7 @@ install_update_tailscale() {
         cd /usrdata
         curl -k -L -O $MYGITROOT/tailscale_1.76.1_arm.tgz
         tar -xzf tailscale_1.76.1_arm.tgz
-	rm tailscale_1.76.1_arm.tgz
+    rm tailscale_1.76.1_arm.tgz
         cd /usrdata/tailscale_1.76.1_arm
         mv tailscale tailscaled "$TAILSCALE_DIR/"
         rm -rf /usrdata/tailscale_1.76.1_arm
@@ -115,10 +115,10 @@ install_update_tailscale() {
         echo "Starting Tailscaled..."
         systemctl start tailscaled
         cd /
-	ln -sf /usrdata/tailscale/tailscale /usrdata/root/bin
+    ln -sf /usrdata/tailscale/tailscale /usrdata/root/bin
         remount_ro
         echo -e "\e[32mTailscale installed successfully.\e[0m"
-		exit 0
+        exit 0
     fi
 }
 

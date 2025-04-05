@@ -47,7 +47,7 @@ check_for_updates() {
         fi
     done
     trim_log_file
-	wait_to_update
+    wait_to_update
 }
 
 # Function to wait and trigger updates based on scheduling
@@ -90,19 +90,19 @@ daemon_mode() {
     exec > >(tee -a "$LOG_FILE") 2>&1
     echo "Daemon mode started."
     # Validate only one update frequency is defined
-	frequency_count=0
-	[[ "$UPDATE_FREQUENCY" == "daily" ]] && ((frequency_count++))
-	[[ "$UPDATE_FREQUENCY" == "weekly" ]] && ((frequency_count++))
-	[[ "$UPDATE_FREQUENCY" == "monthly" ]] && ((frequency_count++))
+    frequency_count=0
+    [[ "$UPDATE_FREQUENCY" == "daily" ]] && ((frequency_count++))
+    [[ "$UPDATE_FREQUENCY" == "weekly" ]] && ((frequency_count++))
+    [[ "$UPDATE_FREQUENCY" == "monthly" ]] && ((frequency_count++))
 
-	if [[ $frequency_count -gt 1 ]]; then
-		echo "Error: More than one update frequency is defined. Exiting."
-		exit 1
-	elif [[ $frequency_count -eq 0 && "$UPDATE_FREQUENCY" != "none" ]]; then
-		echo "Error: No valid update frequency defined. Exiting."
-		exit 1
-	fi
-	if [[ "$CONF_ENABLED" == "no" ]]; then
+    if [[ $frequency_count -gt 1 ]]; then
+        echo "Error: More than one update frequency is defined. Exiting."
+        exit 1
+    elif [[ $frequency_count -eq 0 && "$UPDATE_FREQUENCY" != "none" ]]; then
+        echo "Error: No valid update frequency defined. Exiting."
+        exit 1
+    fi
+    if [[ "$CONF_ENABLED" == "no" ]]; then
     echo "Updates are disabled in the configuration."
     exit 0
 fi
@@ -137,7 +137,7 @@ force_check_for_updates() {
             echo "$dir is up to date."
         fi
     done
-	exit 0
+    exit 0
 }
 
 # Helper function to load and update the configuration
@@ -225,24 +225,24 @@ setup() {
 # Command operations: status, enable, disable, update, setup
 case "$1" in
     d)
-	daemon_mode
+    daemon_mode
         ;;
     update)
         load_config
         force_check_for_updates
         ;;
     status)
-	status
-	;;
+        status
+        ;;
     enable)
-	enable_updates
-	;;
+        enable_updates
+        ;;
     disable)
-	disable_updates
-	;;
+        disable_updates
+        ;;
     setup)
-	setup
-	;;
+        setup
+        ;;
     *)
         echo "Usage:"
         echo "d: Run as a background check daemon"
