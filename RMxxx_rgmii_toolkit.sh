@@ -10,6 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 TMP_DIR="/tmp"
 USRDATA_DIR="/usrdata"
 SOCAT_AT_DIR="/usrdata/socat-at-bridge"
@@ -109,7 +110,7 @@ ensure_entware_installed() {
 	remount_rw
     if [ ! -f "/opt/bin/opkg" ]; then
         echo -e "\e[1;32mInstalling Entware/OPKG\e[0m"
-        cd /tmp && wget -O installentware.sh "$GITROOT/installentware.sh" && chmod +x installentware.sh && ./installentware.sh
+        cd /tmp && wget --no-check-certificate -O installentware.sh "$MYGITROOT/installentware.sh" && chmod +x installentware.sh && ./installentware.sh
         if [ "$?" -ne 0 ]; then
             echo -e "\e[1;31mEntware/OPKG installation failed. Please check your internet connection or the repository URL.\e[0m"
             exit 1
@@ -308,8 +309,8 @@ set_simpleadmin_passwd(){
 	ensure_entware_installed
  	opkg update
   	opkg install libaprutil
-	wget -O /usrdata/root/bin/htpasswd $GITROOT/simpleadmin/htpasswd && chmod +x /usrdata/root/bin/htpasswd
-	wget -O /usrdata/root/bin/simplepasswd $GITROOT/simpleadmin/simplepasswd && chmod +x /usrdata/root/bin/simplepasswd
+	wget --no-check-certificate -O /usrdata/root/bin/htpasswd $MYGITROOT/simpleadmin/htpasswd && chmod +x /usrdata/root/bin/htpasswd
+	wget --no-check-certificate -O /usrdata/root/bin/simplepasswd $MYGITROOT/simpleadmin/simplepasswd && chmod +x /usrdata/root/bin/simplepasswd
 	echo -e "\e[1;32mTo change your simpleadmin (admin) password in the future...\e[0m"
 	echo -e "\e[1;32mIn the console type simplepasswd and press enter\e[0m"
 	/usrdata/root/bin/simplepasswd
@@ -328,20 +329,20 @@ install_simple_admin() {
 	echo -e "\e[1;31m2) Installing Simpleadmin 2.0\e[0m"
 	mkdir /usrdata/simpleupdates > /dev/null 2>&1
 	mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-	wget -O /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh $GITROOT/simpleupdates/scripts/update_socat-at-bridge.sh && chmod +x /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
+	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh $MYGITROOT/simpleupdates/scripts/update_socat-at-bridge.sh && chmod +x /usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
 	echo -e "\e[1;32mInstalling/updating dependency: socat-at-bridge\e[0m"
 	echo -e "\e[1;32mPlease Wait....\e[0m"
 	/usrdata/simpleupdates/scripts/update_socat-at-bridge.sh
 	echo -e "\e[1;32m Dependency: socat-at-bridge has been updated/installed.\e[0m"
 	sleep 1
-	wget -O /usrdata/simpleupdates/scripts/update_simplefirewall.sh $GITROOT/simpleupdates/scripts/update_simplefirewall.sh && chmod +x /usrdata/simpleupdates/scripts/update_simplefirewall.sh
+	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simplefirewall.sh $MYGITROOT/simpleupdates/scripts/update_simplefirewall.sh && chmod +x /usrdata/simpleupdates/scripts/update_simplefirewall.sh
 	echo -e "\e[1;32mInstalling/updating dependency: simplefirewall\e[0m"
 	echo -e "\e[1;32mPlease Wait....\e[0m"
 	/usrdata/simpleupdates/scripts/update_simplefirewall.sh
 	echo -e "\e[1;32m Dependency: simplefirewall has been updated/installed.\e[0m"
 	sleep 1
 	set_simpleadmin_passwd
-	wget -O /usrdata/simpleupdates/scripts/update_simpleadmin.sh $GITROOT/simpleupdates/scripts/update_simpleadmin.sh && chmod +x /usrdata/simpleupdates/scripts/update_simpleadmin.sh
+	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_simpleadmin.sh $MYGITROOT/simpleupdates/scripts/update_simpleadmin.sh && chmod +x /usrdata/simpleupdates/scripts/update_simpleadmin.sh
 	echo -e "\e[1;32mInstalling/updating: Simpleadmin content\e[0m"
 	echo -e "\e[1;32mPlease Wait....\e[0m"
 	/usrdata/simpleupdates/scripts/update_simpleadmin.sh
@@ -470,7 +471,7 @@ echo -e "\e[1;31m2) Installing tailscale from the $GITTREE branch\e[0m"
 			ensure_entware_installed
 			mkdir /usrdata/simpleupdates > /dev/null 2>&1
 		    mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-		    wget -O /usrdata/simpleupdates/scripts/update_tailscale.sh $GITROOT/simpleupdates/scripts/update_tailscale.sh && chmod +x /usrdata/simpleupdates/scripts/update_tailscale.sh
+		    wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_tailscale.sh $MYGITROOT/simpleupdates/scripts/update_tailscale.sh && chmod +x /usrdata/simpleupdates/scripts/update_tailscale.sh
 		    echo -e "\e[1;32mInstalling/updating: Tailscale\e[0m"
 			echo -e "\e[1;32mPlease Wait....\e[0m"
 			remount_rw
@@ -496,8 +497,8 @@ configure_tailscale() {
         1)
 	remount_rw
 	cd /lib/systemd/system/
-	wget -O tailscale-webui.service $GITROOT/tailscale/systemd/tailscale-webui.service
-  	wget -O tailscale-webui-trigger.service $GITROOT/tailscale/systemd/tailscale-webui-trigger.service
+	wget --no-check-certificate -O tailscale-webui.service $MYGITROOT/tailscale/systemd/tailscale-webui.service
+  	wget --no-check-certificate -O tailscale-webui-trigger.service $MYGITROOT/tailscale/systemd/tailscale-webui-trigger.service
      	ln -sf /lib/systemd/system/tailscale-webui-trigger.service /lib/systemd/system/multi-user.target.wants/
      	systemctl daemon-reload
        	echo "Tailscale Web UI Enabled"
@@ -738,7 +739,7 @@ install_sshd() {
 	ensure_entware_installed
     mkdir /usrdata/simpleupdates > /dev/null 2>&1
 	mkdir /usrdata/simpleupdates/scripts > /dev/null 2>&1
-	wget -O /usrdata/simpleupdates/scripts/update_sshd.sh $GITROOT/simpleupdates/scripts/update_sshd.sh && chmod +x /usrdata/simpleupdates/scripts/update_sshd.sh
+	wget --no-check-certificate -O /usrdata/simpleupdates/scripts/update_sshd.sh $MYGITROOT/simpleupdates/scripts/update_sshd.sh && chmod +x /usrdata/simpleupdates/scripts/update_sshd.sh
 	echo -e "\e[1;32mInstalling/updating: SSHd\e[0m"
 	echo -e "\e[1;32mPlease Wait....\e[0m"
 	/usrdata/simpleupdates/scripts/update_sshd.sh
@@ -750,7 +751,7 @@ install_sshd() {
 
 ARCH=$(uname -a)
 if echo "$ARCH" | grep -q "aarch64"; then
-    cd /tmp && wget -O RM55x_rcPCIe_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXPINN/RM55x_rcPCIe_toolkit.sh && chmod +x RM55x_rcPCIe_toolkit.sh && ./RM55x_rcPCIe_toolkit.sh && cd /
+    cd /tmp && wget --no-check-certificate -O RM55x_rcPCIe_toolkit.sh $MYGITROOT/RM55x_rcPCIe_toolkit.sh && chmod +x RM55x_rcPCIe_toolkit.sh && ./RM55x_rcPCIe_toolkit.sh && cd /
     exit 0
 elif echo "$ARCH" | grep -q "armv7l"; then
     # Continue if architecture is armv7l
@@ -904,7 +905,7 @@ echo "                                           :+##+.            "
 			mkdir /usrdata/root
      	    mkdir /usrdata/root/bin
 			cd /usrdata/root/bin
-     	    wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
+     	    wget --no-check-certificate https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
 			tar -xzf ookla-speedtest-1.2.0-linux-armhf.tgz
      	    rm ookla-speedtest-1.2.0-linux-armhf.tgz
 			rm speedtest.md
@@ -923,7 +924,7 @@ echo "                                           :+##+.            "
 			mkdir /usrdata/root
      	    mkdir /usrdata/root/bin
 			cd /usrdata/root/bin
-     	    wget -O fast https://github.com/ddo/fast/releases/download/v0.0.4/fast_linux_arm && chmod +x fast
+     	    wget --no-check-certificate -O fast $MYGITROOT/fast_linux_arm && chmod +x fast
      	    cd /
 			ln -sf /usrdata/root/bin/fast /bin
      	    remount_ro

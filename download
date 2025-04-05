@@ -22,9 +22,9 @@ download_file() {
     mkdir -p "$(dirname "$output")"
 
     if command -v curl > /dev/null 2>&1; then
-        curl -L -o "$output" "$url"
+        curl -k -L -o "$output" "$url"
     elif command -v wget > /dev/null 2>&1; then
-        wget -O "$output" "$url"
+        wget --no-check-certificate -O "$output" "$url"
     else
         echo "Error: Neither curl nor wget is available."
         exit 1

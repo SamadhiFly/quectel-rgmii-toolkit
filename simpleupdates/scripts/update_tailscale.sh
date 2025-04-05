@@ -10,6 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 # Define filesystem path
 DIR_NAME="tailscale"
 SERVICE_FILE="/lib/systemd/system/install_tailscale.service"
@@ -65,6 +66,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 # Define filesystem path
 TAILSCALE_DIR="/usrdata/tailscale/"
 TAILSCALE_SYSD_DIR="/usrdata/tailscale/systemd"
@@ -93,7 +95,7 @@ install_update_tailscale() {
         mkdir -p "$TAILSCALE_DIR" "$TAILSCALE_SYSD_DIR"
         echo "Downloading binary files..."
         cd /usrdata
-        curl -O https://pkgs.tailscale.com/stable/tailscale_1.76.1_arm.tgz
+        curl -k -L -O $MYGITROOT/tailscale_1.76.1_arm.tgz
         tar -xzf tailscale_1.76.1_arm.tgz
 	rm tailscale_1.76.1_arm.tgz
         cd /usrdata/tailscale_1.76.1_arm
@@ -101,8 +103,8 @@ install_update_tailscale() {
         rm -rf /usrdata/tailscale_1.76.1_arm
         echo "Downloading systemd files..."
         cd "$TAILSCALE_SYSD_DIR"
-        wget $GITROOT/tailscale/systemd/tailscaled.service
-        wget $GITROOT/tailscale/systemd/tailscaled.defaults
+        wget --no-check-certificate $MYGITROOT/tailscale/systemd/tailscaled.service
+        wget --no-check-certificate $MYGITROOT/tailscale/systemd/tailscaled.defaults
         sleep 2s
         echo "Setting Permissions..."
         chmod +x "$TAILSCALE_DIR/tailscaled" "$TAILSCALE_DIR/tailscale"

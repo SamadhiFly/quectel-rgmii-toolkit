@@ -10,6 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 DIR_NAME="simplefirewall"
@@ -59,6 +60,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 SIMPLE_FIREWALL_DIR="/usrdata/simplefirewall"
@@ -94,14 +96,14 @@ install_simple_firewall() {
     mount -o remount,rw /
     mkdir -p "$SIMPLE_FIREWALL_DIR"
     mkdir -p "$SIMPLE_FIREWALL_SYSTEMD_DIR"
-    wget -O "$SIMPLE_FIREWALL_DIR/simplefirewall.sh" $GITROOT/simplefirewall/simplefirewall.sh
-    wget -O "$SIMPLE_FIREWALL_DIR/ttl-override" $GITROOT/simplefirewall/ttl-override
-    wget -O "$SIMPLE_FIREWALL_DIR/ttlvalue" $GITROOT/simplefirewall/ttlvalue
+    wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/simplefirewall.sh" $MYGITROOT/simplefirewall/simplefirewall.sh
+    wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/ttl-override" $MYGITROOT/simplefirewall/ttl-override
+    wget --no-check-certificate -O "$SIMPLE_FIREWALL_DIR/ttlvalue" $MYGITROOT/simplefirewall/ttlvalue
 	chmod 666 $SIMPLE_FIREWALL_DIR/ttlvalue
     chmod +x "$SIMPLE_FIREWALL_DIR/simplefirewall.sh"
     chmod +x "$SIMPLE_FIREWALL_DIR/ttl-override"	
-    wget -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/simplefirewall.service" $GITROOT/simplefirewall/systemd/simplefirewall.service
-    wget -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/ttl-override.service" $GITROOT/simplefirewall/systemd/ttl-override.service
+    wget --no-check-certificate -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/simplefirewall.service" $MYGITROOT/simplefirewall/systemd/simplefirewall.service
+    wget --no-check-certificate -O "$SIMPLE_FIREWALL_SYSTEMD_DIR/ttl-override.service" $MYGITROOT/simplefirewall/systemd/ttl-override.service
     cp -rf $SIMPLE_FIREWALL_SYSTEMD_DIR/* /lib/systemd/system
     ln -sf "/lib/systemd/system/simplefirewall.service" "/lib/systemd/system/multi-user.target.wants/"
     ln -sf "/lib/systemd/system/ttl-override.service" "/lib/systemd/system/multi-user.target.wants/"

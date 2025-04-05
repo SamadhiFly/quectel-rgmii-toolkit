@@ -34,8 +34,8 @@ toolkit_menu() {
         read -p "Select an option (1-3): " option
 
         case "$option" in
-            1) cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd / ;;
-            2) cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/development-SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd / ;;
+            1) cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd / ;;
+            2) cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd / ;;
             3) break ;;
             *) echo "Invalid option. Please try again." ;;
         esac

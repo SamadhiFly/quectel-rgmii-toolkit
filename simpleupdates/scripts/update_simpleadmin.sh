@@ -10,6 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 DIR_NAME="simpleadmin"
@@ -63,6 +64,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 SIMPLE_ADMIN_DIR="/usrdata/simpleadmin"
@@ -128,8 +130,8 @@ install_lighttpd() {
     systemctl stop lighttpd
     echo -e "\033[0;32mInstalling/Updating Lighttpd...\033[0m"
     mkdir -p "$SIMPLE_ADMIN_DIR"
-    wget -O "$SIMPLE_ADMIN_DIR/lighttpd.conf" $GITROOT/simpleadmin/lighttpd.conf
-    wget -O "/lib/systemd/system/lighttpd.service" $GITROOT/simpleadmin/systemd/lighttpd.service
+    wget --no-check-certificate -O "$SIMPLE_ADMIN_DIR/lighttpd.conf" $MYGITROOT/simpleadmin/lighttpd.conf
+    wget --no-check-certificate -O "/lib/systemd/system/lighttpd.service" $MYGITROOT/simpleadmin/systemd/lighttpd.service
     ln -sf "/lib/systemd/system/lighttpd.service" "/lib/systemd/system/multi-user.target.wants/"
     echo "www-data ALL = (root) NOPASSWD: /usr/sbin/iptables, /usr/sbin/ip6tables, /usrdata/simplefirewall/ttl-override, /bin/echo, /bin/cat" > /opt/etc/sudoers.d/www-data
 
@@ -157,56 +159,56 @@ echo -e "\e[1;31m2) Installing simpleadmin from the $GITTREE branch\e[0m"
 			mkdir $SIMPLE_ADMIN_DIR/www/css
     		mkdir $SIMPLE_ADMIN_DIR/www/js
             cd $SIMPLE_ADMIN_DIR/systemd
-            wget $GITROOT/simpleadmin/systemd/lighttpd.service
+            wget --no-check-certificate $MYGITROOT/simpleadmin/systemd/lighttpd.service
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/script
-			wget $GITROOT/simpleadmin/script/ttl_script.sh
-			wget $GITROOT/simpleadmin/script/remove_watchcat.sh
-			wget $GITROOT/simpleadmin/script/create_watchcat.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/script/ttl_script.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/script/remove_watchcat.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/script/create_watchcat.sh
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/console
-			wget $GITROOT/simpleadmin/console/.profile
+			wget --no-check-certificate $MYGITROOT/simpleadmin/console/.profile
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/console/menu
-			wget $GITROOT/simpleadmin/console/menu/start_menu.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
 			ln -f $SIMPLE_ADMIN_DIR/console/menu/start_menu.sh /usrdata/root/bin/menu
-			wget $GITROOT/simpleadmin/console/menu/sfirewall_settings.sh
-			wget $GITROOT/simpleadmin/console/menu/start_menu.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/sfirewall_settings.sh
+			wget --no-check-certificate $MYGITROOT/simpleadmin/console/menu/start_menu.sh
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/www
-			wget $GITROOT/simpleadmin/www/deviceinfo.html
-   			wget $GITROOT/simpleadmin/www/favicon.ico
-			wget $GITROOT/simpleadmin/www/index.html
-    		wget $GITROOT/simpleadmin/www/network.html
-			wget $GITROOT/simpleadmin/www/settings.html
-			wget $GITROOT/simpleadmin/www/sms.html
-			wget $GITROOT/simpleadmin/www/scanner.html
-			wget $GITROOT/simpleadmin/www/watchcat.html
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/deviceinfo.html
+   			wget --no-check-certificate $MYGITROOT/simpleadmin/www/favicon.ico
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/index.html
+    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/network.html
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/settings.html
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/sms.html
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/scanner.html
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/watchcat.html
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/www/js
-			wget $GITROOT/simpleadmin/www/js/alpinejs.min.js
-			wget $GITROOT/simpleadmin/www/js/bootstrap.bundle.min.js
-			wget $GITROOT/simpleadmin/www/js/dark-mode.js
-			wget $GITROOT/simpleadmin/www/js/generate-freq-box.js
-			wget $GITROOT/simpleadmin/www/js/parse-settings.js
-			wget $GITROOT/simpleadmin/www/js/populate-checkbox.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/alpinejs.min.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/bootstrap.bundle.min.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/dark-mode.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/generate-freq-box.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/parse-settings.js
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/js/populate-checkbox.js
     		sleep 1
     		cd $SIMPLE_ADMIN_DIR/www/css
-    		wget $GITROOT/simpleadmin/www/css/bootstrap.min.css
-      		wget $GITROOT/simpleadmin/www/css/styles.css
+    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/bootstrap.min.css
+      		wget --no-check-certificate $MYGITROOT/simpleadmin/www/css/styles.css
 			sleep 1
 			cd $SIMPLE_ADMIN_DIR/www/cgi-bin
-			wget $GITROOT/simpleadmin/www/cgi-bin/get_atcommand
-			wget $GITROOT/simpleadmin/www/cgi-bin/user_atcommand
-			wget $GITROOT/simpleadmin/www/cgi-bin/get_ping
-			wget $GITROOT/simpleadmin/www/cgi-bin/get_sms
-    		wget $GITROOT/simpleadmin/www/cgi-bin/get_ttl_status
-      		wget $GITROOT/simpleadmin/www/cgi-bin/set_ttl
-			wget $GITROOT/simpleadmin/www/cgi-bin/send_sms
-			wget $GITROOT/simpleadmin/www/cgi-bin/get_uptime
-			wget $GITROOT/simpleadmin/www/cgi-bin/get_watchcat_status
-			wget $GITROOT/simpleadmin/www/cgi-bin/set_watchcat
-			wget $GITROOT/simpleadmin/www/cgi-bin/watchcat_maker
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_atcommand
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/user_atcommand
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ping
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_sms
+    		wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_ttl_status
+      		wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_ttl
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/send_sms
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_uptime
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/get_watchcat_status
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/set_watchcat
+			wget --no-check-certificate $MYGITROOT/simpleadmin/www/cgi-bin/watchcat_maker
 			sleep 1
 			cd /
             chmod +x $SIMPLE_ADMIN_DIR/www/cgi-bin/*
@@ -223,13 +225,13 @@ echo -e "\e[1;31m2) Installing simpleadmin from the $GITTREE branch\e[0m"
 install_ttyd() {
     echo -e "\e[1;34mStarting ttyd installation process...\e[0m"
     cd $SIMPLE_ADMIN_DIR/console
-    curl -L -o ttyd https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.armhf && chmod +x ttyd
-    wget "$GITROOT/simpleadmin/console/ttyd.bash" && chmod +x ttyd.bash
+    curl -k -L -o ttyd $MYGITROOT/ttyd.armhf && chmod +x ttyd
+    wget --no-check-certificate "$MYGITROOT/simpleadmin/console/ttyd.bash" && chmod +x ttyd.bash
     cd $SIMPLE_ADMIN_DIR/systemd/
-	wget "$GITROOT/simpleadmin/systemd/ttyd.service"
+	wget --no-check-certificate "$MYGITROOT/simpleadmin/systemd/ttyd.service"
     cp -f $SIMPLE_ADMIN_DIR/systemd/ttyd.service /lib/systemd/system/
     ln -sf /usrdata/simpleadmin/ttyd /bin
-    
+
     # Enabling and starting ttyd service
     systemctl daemon-reload
     ln -sf /lib/systemd/system/ttyd.service /lib/systemd/system/multi-user.target.wants/

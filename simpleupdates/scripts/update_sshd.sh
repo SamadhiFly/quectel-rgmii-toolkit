@@ -10,6 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 DIR_NAME="simpleupdates"
@@ -47,6 +48,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 
 install_sshd() {
@@ -54,7 +56,7 @@ echo -e "\e[1;32mOpenSSH Server\e[0m"
         remount_rw
 
 	    mkdir /usrdata/sshd
-        wget -O /lib/systemd/system/sshd.service "$GITROOT/sshd/sshd.service"
+        wget --no-check-certificate -O /lib/systemd/system/sshd.service "$MYGITROOT/sshd/sshd.service"
     	ln -sf "/lib/systemd/system/sshd.service" "/lib/systemd/system/multi-user.target.wants/"
         
         opkg install openssh-server-pam

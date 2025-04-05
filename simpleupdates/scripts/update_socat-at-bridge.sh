@@ -10,6 +10,8 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+
 # Define filesystem path
 DIR_NAME="socat-at-bridge"
 SERVICE_FILE="/lib/systemd/system/install_socat-at-bridge.service"
@@ -56,6 +58,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
+MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 SOCAT_AT_DIR="/usrdata/socat-at-bridge"
@@ -102,18 +105,18 @@ install_at_socat() {
 	mkdir $SOCAT_AT_DIR
     cd $SOCAT_AT_DIR
     mkdir $SOCAT_AT_SYSD_DIR
-    wget $GITROOT/socat-at-bridge/socat-armel-static
-    wget $GITROOT/socat-at-bridge/killsmd7bridge
-    wget $GITROOT/socat-at-bridge/atcmd
-	wget $GITROOT/socat-at-bridge/atcmd11
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/socat-armel-static
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/killsmd7bridge
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/atcmd
+	wget --no-check-certificate $MYGITROOT/socat-at-bridge/atcmd11
     cd $SOCAT_AT_SYSD_DIR
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd11.service
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd11-from-ttyIN.service
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd11-to-ttyIN.service
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-killsmd7bridge.service	
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd7-from-ttyIN2.service
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd7-to-ttyIN2.service
-    wget $GITROOT/socat-at-bridge/systemd_units/socat-smd7.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11-from-ttyIN.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd11-to-ttyIN.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-killsmd7bridge.service	
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7-from-ttyIN2.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7-to-ttyIN2.service
+    wget --no-check-certificate $MYGITROOT/socat-at-bridge/systemd_units/socat-smd7.service
 
     # Set execute permissions
     cd $SOCAT_AT_DIR

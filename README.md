@@ -51,6 +51,9 @@ Fork development, and PR development to development :)
 ```bash
 adb shell "cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
 ```
+```bash
+adb shell "cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
+```
 
 **Or, if you want to stay in the modems shell when you are done**
 
@@ -61,6 +64,10 @@ Then run
 ```
 cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
 ```
+```
+cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
+```
+
 **You should see:**
 ![Toolkit](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulantoolkit.png?raw=true)
 
