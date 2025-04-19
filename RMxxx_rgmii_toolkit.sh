@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Define toolkit paths
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin:/usrdata/root/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin
 GITUSER="iamromulan"
 REPONAME="quectel-rgmii-toolkit"
 GITTREE="SDXLEMUR"
@@ -10,7 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 TMP_DIR="/tmp"
 USRDATA_DIR="/usrdata"
 SOCAT_AT_DIR="/usrdata/socat-at-bridge"
@@ -130,10 +130,14 @@ ensure_entware_installed() {
             rm /opt/etc/passwd
             cp /etc/shadow /opt/etc/
             cp /etc/passwd /opt/etc
+            mkdir -p /opt/usr/sbin
+            mkdir -p /opt/usr/bin
+            mkdir -p /opt/sbin
+            mkdir -p /opt/bin
             mkdir -p /usrdata/root/bin
             touch /usrdata/root/.profile
             echo "# Set PATH for all shells" > /usrdata/root/.profile
-            echo "export PATH=/bin:/usr/sbin:/usr/bin:/sbin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
+            echo "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
             chmod +x /usrdata/root/.profile
             sed -i '1s|/home/root:/bin/sh|/usrdata/root:/bin/bash|' /opt/etc/passwd
             rm /bin/login /usr/bin/passwd
@@ -153,10 +157,14 @@ ensure_entware_installed() {
 
         if [ ! -f "/usrdata/root/.profile" ]; then
             opkg update && opkg install shadow-useradd
+            mkdir -p /opt/usr/sbin
+            mkdir -p /opt/usr/bin
+            mkdir -p /opt/sbin
+            mkdir -p /opt/bin
             mkdir -p /usrdata/root/bin
             touch /usrdata/root/.profile
             echo "# Set PATH for all shells" > /usrdata/root/.profile
-            echo "export PATH=/bin:/usr/sbin:/usr/bin:/sbin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
+            echo "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
             chmod +x /usrdata/root/.profile
             sed -i '1s|/home/root:/bin/sh|/usrdata/root:/bin/bash|' /opt/etc/passwd
         fi

@@ -15,7 +15,7 @@
 	name = SamadhiFly
 	email = lsgx@live.com
 [remote "origin"]
-	url = http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit.git
+	url = https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [remote "upstream"]
 	url = https://github.com/iamromulan/quectel-rgmii-toolkit.git

@@ -10,7 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 DIR_NAME="simpleadmin"
@@ -18,7 +18,7 @@ SERVICE_FILE="/lib/systemd/system/install_simpleadmin.service"
 SERVICE_NAME="install_simpleadmin"
 TMP_SCRIPT="/tmp/install_simpleadmin.sh"
 LOG_FILE="/tmp/install_simpleadmin.log"
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin:/usrdata/root/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin
 
 # Tmp Script dependent constants 
 SIMPLE_ADMIN_DIR="/usrdata/simpleadmin"
@@ -64,12 +64,12 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 SIMPLE_ADMIN_DIR="/usrdata/simpleadmin"
 export HOME=/usrdata/root
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin:/usrdata/root/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin
 
 # Function to remount file system as read-write
 remount_rw() {

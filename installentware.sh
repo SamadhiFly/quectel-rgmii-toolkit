@@ -143,11 +143,15 @@ opkg update && opkg install shadow-login shadow-passwd shadow-useradd
     rm /opt/etc/passwd
     cp /etc/shadow /opt/etc/
     cp /etc/passwd /opt/etc
+    mkdir -p /opt/usr/sbin
+    mkdir -p /opt/usr/bin
+    mkdir -p /opt/sbin
+    mkdir -p /opt/bin
     mkdir /usrdata/root
     mkdir /usrdata/root/bin
     touch /usrdata/root/.profile
     echo "# Set PATH for all shells" > /usrdata/root/.profile
-    echo "export PATH=/bin:/usr/sbin:/usr/bin:/sbin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
+    echo "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin" >> /usrdata/root/.profile
     chmod +x /usrdata/root/.profile
     sed -i '1s|/home/root:/bin/sh|/usrdata/root:/bin/bash|' /opt/etc/passwd
     rm /bin/login /usr/bin/passwd

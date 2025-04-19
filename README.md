@@ -27,16 +27,6 @@ Fork development, and PR development to development :)
   
 
 **My goal** is for this to also include any new useful scripts or software for this modem and others that support RGMII mode.
-## Screenshots
-
-![Toolkit](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_toolkit.png?raw=true)
-![Home](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_home.png?raw=true)
-![Simple Network](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_simplenetwork.png?raw=true)
-![Simple Scan](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_simplescan.png?raw=true)
-![Simple Settings](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_simplesettings.png?raw=true)
-![SMS](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_sms.png?raw=true)
-![Console](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_console.png?raw=true)
-![Device Info](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/dev_deviceinfo.png?raw=true)
 
 # Devleopment Branch: the below commands will download the beta/work in progress toolkit 
 
@@ -52,7 +42,7 @@ Fork development, and PR development to development :)
 adb shell "cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
 ```
 ```bash
-adb shell "cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
+adb shell "cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
 ```
 
 **Or, if you want to stay in the modems shell when you are done**
@@ -65,7 +55,7 @@ Then run
 cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/SDXLEMUR/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
 ```
 ```
-cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
+cd /tmp && wget --no-check-certificate -O RMxxx_rgmii_toolkit.sh https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
 ```
 
 **You should see:**

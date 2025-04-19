@@ -10,7 +10,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 DIR_NAME="simplefirewall"
@@ -60,7 +60,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 # Define filesystem path
 SIMPLE_FIREWALL_DIR="/usrdata/simplefirewall"

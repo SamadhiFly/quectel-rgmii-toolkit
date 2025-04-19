@@ -2,9 +2,10 @@
 # and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
 
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+[ -d /opt/usr/sbin ] && PATH=$PATH:/opt/usr/sbin
+[ -d /opt/usr/bin ] && PATH=$PATH:/opt/usr/bin
 [ -d /opt/sbin ] && PATH=$PATH:/opt/sbin
 [ -d /opt/bin ] && PATH=$PATH:/opt/bin
-[ -d /usrdata/root/sbin ] && PATH=$PATH:/usrdata/root/sbin
 [ -d /usrdata/root/bin ] && PATH=$PATH:/usrdata/root/bin
 EDITOR="vi"			# needed for packages like cron, git-commit
 [ "$TERM" ] || TERM="vt100"	# Basic terminal capab. For screen etc.

@@ -10,14 +10,14 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 # Define filesystem path
 DIR_NAME="tailscale"
 SERVICE_FILE="/lib/systemd/system/install_tailscale.service"
 SERVICE_NAME="install_tailscale"
 TMP_SCRIPT="/tmp/install_tailscale.sh"
 LOG_FILE="/tmp/install_tailscale.log"
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin:/usrdata/root/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin
 
 # Tmp Script dependent constants 
 TAILSCALE_DIR="/usrdata/tailscale/"
@@ -56,7 +56,7 @@ cat <<EOF > "$TMP_SCRIPT"
 #!/bin/bash
 
 export HOME=/usrdata/root
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin:/usrdata/root/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usrdata/root/bin
 # Define GitHub repo info
 GITUSER="iamromulan"
 REPONAME="quectel-rgmii-toolkit"
@@ -66,7 +66,7 @@ GITDEVTREE="development-SDXLEMUR"
 GITROOT="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITTREE"
 GITROOTMAIN="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITMAINTREE"
 GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
-MYGITROOT="http://121.62.31.25:10012/jjx/quectel-rgmii-toolkit/raw/branch/Development"
+MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 # Define filesystem path
 TAILSCALE_DIR="/usrdata/tailscale/"
 TAILSCALE_SYSD_DIR="/usrdata/tailscale/systemd"
