@@ -355,6 +355,12 @@ install_simple_admin() {
     /usrdata/simpleupdates/scripts/update_simpleadmin.sh
     echo -e "\e[1;32mSimpleadmin content has been updated/installed.\e[0m"
     sleep 1
+    install_sshd
+    sleep 1
+    install_iperf3
+    sleep 1
+    install_rtty
+    sleep 1
     break
 }
 
@@ -906,8 +912,7 @@ while true; do
         6)
             configure_simple_firewall
             ;;
-        
-        7)  
+        7)
             tailscale_menu
             ;;
         8)
