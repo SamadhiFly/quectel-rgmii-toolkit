@@ -14,10 +14,10 @@ MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Devel
 
 # Define filesystem path
 DIR_NAME="simpleupdates"
-SERVICE_FILE="/lib/systemd/system/install_sshd.service"
-SERVICE_NAME="install_sshd"
-TMP_SCRIPT="/tmp/install_sshd.sh"
-LOG_FILE="/tmp/install_sshd.log"
+SERVICE_FILE="/lib/systemd/system/install_rtty.service"
+SERVICE_NAME="install_rtty"
+TMP_SCRIPT="/tmp/install_rtty.sh"
+LOG_FILE="/tmp/install_rtty.log"
 
 # Tmp Script dependent constants 
 
@@ -51,43 +51,42 @@ GITROOTDEV="https://raw.githubusercontent.com/$GITUSER/$REPONAME/$GITDEVTREE"
 MYGITROOT="https://110.42.96.64:21891/jjx/quectel-rgmii-toolkit/raw/branch/Development"
 
 
-install_sshd() {
-    echo -e "\e[1;32mOpenSSH Server\e[0m"
+install_rtty() {
+    echo -e "\e[1;32mrtty Util\e[0m"
     remount_rw
 
-    mkdir /usrdata/sshd
-    wget --no-check-certificate -O /lib/systemd/system/sshd.service "$MYGITROOT/sshd/sshd.service"
-    ln -sf "/lib/systemd/system/sshd.service" "/lib/systemd/system/multi-user.target.wants/"
+    opkg install ldd
+    opkg install libev
 
-    opkg install openssh-client
-    opkg install openssh-client-utils
-    opkg install openssh-keygen
+    echo "Installing rtty..."
+        echo "Downloading binary files..."
+        cd /tmp/
+        curl -k -L -O $MYGITROOT/rtty-nossl_8.1.3_armv7.tgz
+        tar -xzf rtty-nossl_8.1.3_armv7.tgz -C /
+     rm rtty-nossl_8.1.3_armv7.tgz
+        cd /opt/sbin/
+        ln -sf rtty-nossl rtty
+        chmod +x rtty
+        chmod +x rtty-*
+        cd /
 
-    opkg install openssh-server-pam
-    opkg install openssh-sftp-server
-    opkg install openssh-sftp-client
+    mkdir /usrdata/rtty
+    wget --no-check-certificate -O /lib/systemd/system/rtty.service "$MYGITROOT/rtty/rtty.service"
+    ln -sf "/lib/systemd/system/rtty.service" "/lib/systemd/system/multi-user.target.wants/"
 
-    for script in /opt/etc/init.d/*sshd*; do
+    for script in /opt/etc/init.d/*rtty*; do
     if [ -f "$script" ]; then
-        echo "Removing existing sshd init script: $script"
-        rm "$script" # Remove the script if it contains 'sshd' in its name
+        echo "Removing existing rtty init script: $script"
+        rm "$script" # Remove the script if it contains 'rtty' in its name
     fi
     done
-    /opt/bin/ssh-keygen -A
     systemctl daemon-reload
-    systemctl enable sshd
+    systemctl enable rtty
+    systemctl start rtty
 
-    # Enable PAM and PermitRootLogin
-    sed -i "s/^.*UsePAM .*/UsePAM yes/" "/opt/etc/ssh/sshd_config"
-    sed -i "s/^.*PermitRootLogin .*/PermitRootLogin yes/" "/opt/etc/ssh/sshd_config"
-
-    # Ensure the sshd user exists in the /opt/etc/passwd file
-    grep "sshd:x:106" /opt/etc/passwd || echo "sshd:x:106:65534:Linux User,,,:/opt/run/sshd:/bin/nologin" >> /opt/etc/passwd
-    systemctl start sshd
-
-    echo -e "\e[1;32mOpenSSH installed!!\e[0m"
+    echo -e "\e[1;32mrtty installed!!\e[0m"
 }
-install_sshd
+install_rtty
 exit 0
 EOF
 

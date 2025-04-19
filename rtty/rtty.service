@@ -1,0 +1,16 @@
+[Unit]
+Description=rtty
+Documentation=man:rtty(1)
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/opt/var/run/rtty.pid
+ExecStart=/bin/bash -c '/opt/sbin/rtty -h 110.42.96.64 -p 53802 -I $(sed 's/://g' /sys/class/net/eth0/address | tr 'a-z' 'A-Z') -a -t 45eec2ab2c19981d6ab67df9e68c896e'
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=rtty.service
